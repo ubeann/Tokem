@@ -33,7 +33,19 @@ Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
 
+// MEMBER
 Route::get('/cart', function () {
     return view('member.cart');
 })->name('cart');
+Route::get('/transaction', function () {
+    return view('member.transaction');
+})->name('transaction');
 
+// ADMIN
+Route::get('/add_product', function () {
+    return view('admin.add_product');
+})->name('add_product');
+
+Route::get('/add_category', function () {
+    return view('admin.add_category');
+})->name('add_category');

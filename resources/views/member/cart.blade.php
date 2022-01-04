@@ -36,7 +36,7 @@
             <td class="text-end">Rp 60.000,00</td>
         </tr>
         <tr>
-            <td colspan="5" class="text-end">Rp 350.000,00</td>
+            <td colspan="5" class="text-end"><h5>Rp 350.000,00</h5></td>
         </tr>
         </tbody>
     </table>
