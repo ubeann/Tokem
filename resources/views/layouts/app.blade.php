@@ -34,17 +34,17 @@
                         <li class="nav-item"><a class="nav-link me-lg-3" href="#download">My Transaction</a></li>
                     </ul>
                     {{-- BELUM LOGIN --}}
-                    <button class="btn btn-gray rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+                    <a href="{{ route('register') }}" class="btn btn-gray rounded-pill px-3 mb-2 mb-lg-0">
                         <span class="d-flex align-items-center">
                             <span class="small">Sign Up</span>
                         </span>
-                    </button>
-                    <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+                    </a>
+                    <a href="{{ route('login') }}" class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0">
                         <span class="d-flex align-items-center">
                             <i class="bi bi-box-arrow-in-right me-2"></i>
                             <span class="small">Sign In</span>
                         </span>
-                    </button>
+                    </a>
 
                     {{-- UDAH LOGIN MEMBER --}}
                     {{-- <button class="btn btn-gray rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
