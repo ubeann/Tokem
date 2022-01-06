@@ -32,20 +32,49 @@
                                     <h6 class="h5 mb-0">Welcome back!</h6>
                                     <p class="text-muted mt-2 mb-4">Please enter your email address and password</p>
 
-                                    {{-- ALERT --}}
-                                    <div class="alert alert-danger alert-dismissible fade show container mt-4" role="alert">
-                                        <strong>Error!</strong> You should check in on some of those fields below.
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                      </div>
+                                    @if (Session::has('success'))
+                                        {{-- SUCCESS --}}
+                                        <div class="alert alert-success alert-dismissible fade show container mt-4" role="alert">
+                                            {{Session::get('success')}}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    @endif
 
-                                    <form>
+                                    @if (Session::has('error'))
+                                        {{-- ERROR --}}
+                                        <div class="alert alert-danger alert-dismissible fade show container mt-4" role="alert">
+                                            {{Session::get('error')}}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    @endif
+
+                                    @if ($errors->any())
+                                        {{-- ERROR --}}
+                                        <div class="alert alert-danger alert-dismissible fade show container mt-4" role="alert">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    @endif
+
+                                    <form method="POST">
+                                        @csrf
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Email address</label>
-                                            <input type="email" class="form-control" id="exampleInputEmail1">
+                                            <label for="email">Email address</label>
+                                            <input name="email" type="email" class="form-control" id="email" value="{{ $email ?? old('email')}}" autofocus autocomplete="on">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Password</label>
+                                            <input name="password" type="password" class="form-control" id="password">
                                         </div>
                                         <div class="form-group mb-5">
-                                            <label for="exampleInputPassword1">Password</label>
-                                            <input type="password" class="form-control" id="exampleInputPassword1">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                                                <label class="custom-control-label" for="remember">Remember me</label>
+                                            </div>
                                         </div>
                                         <button type="submit" class="btn btn-theme">Login</button>
                                     </form>

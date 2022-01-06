@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('landing');
-})->name('landing');
+// Guest routes
+Route::get('/', [PagesController::class, 'index'])->name('landing');
 
 Route::get('/products', function () {
     return view('products');
@@ -25,27 +26,35 @@ Route::get('/products/detail', function () {
     return view('detail');
 })->name('detail');
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+Route::get('login', [AuthController::class, 'formLogin'])->name('login');
+Route::post('login', [AuthController::class, 'login']);
+Route::get('register', [AuthController::class, 'formRegister'])->name('register');
+Route::post('register', [AuthController::class, 'register']);
 
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
+// Authenticated routes
+Route::group(['middleware' => 'auth'], function() {
 
-// MEMBER
-Route::get('/cart', function () {
-    return view('member.cart');
-})->name('cart');
-Route::get('/transaction', function () {
-    return view('member.transaction');
-})->name('transaction');
-
-// ADMIN
-Route::get('/add_product', function () {
-    return view('admin.add_product');
-})->name('add_product');
-
-Route::get('/add_category', function () {
-    return view('admin.add_category');
-})->name('add_category');
+    Route::prefix('profile')->name('profile.')->group(function() {
+        Route::get('/', [AuthController::class, 'profile'])->name('index');
+        Route::get('edit', [AuthController::class, 'editProfile'])->name('edit');
+        Route::post('edit', [AuthController::class, 'update']);
+    });
+    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+    
+    // MEMBER
+    Route::get('/cart', function () {
+        return view('member.cart');
+    })->name('cart');
+    Route::get('/transaction', function () {
+        return view('member.transaction');
+    })->name('transaction');
+    
+    // ADMIN
+    Route::get('/add_product', function () {
+        return view('admin.add_product');
+    })->name('add_product');
+    
+    Route::get('/add_category', function () {
+        return view('admin.add_category');
+    })->name('add_category');
+});

@@ -33,39 +33,46 @@
                         <li class="nav-item"><a class="nav-link me-lg-3" href="#download">About Us</a></li>
                         <li class="nav-item"><a class="nav-link me-lg-3" href="#download">My Transaction</a></li>
                     </ul>
-                    {{-- BELUM LOGIN --}}
-                    <a href="{{ route('register') }}" class="btn btn-gray rounded-pill px-3 mb-2 mb-lg-0">
-                        <span class="d-flex align-items-center">
-                            <span class="small">Sign Up</span>
-                        </span>
-                    </a>
-                    <a href="{{ route('login') }}" class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0">
-                        <span class="d-flex align-items-center">
-                            <i class="bi bi-box-arrow-in-right me-2"></i>
-                            <span class="small">Sign In</span>
-                        </span>
-                    </a>
 
-                    {{-- UDAH LOGIN MEMBER --}}
-                    {{-- <button class="btn btn-gray rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
-                        <span class="d-flex align-items-center">
-                            <span class="small">My Cart</span>
-                        </span>
-                    </button>
-                    <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
-                        <span class="d-flex align-items-center">
-                            <i class="bi bi-person me-2"></i>
-                            <span class="small">Usernamenya</span>
-                        </span>
-                    </button> --}}
+                    @guest
+                        {{-- BELUM LOGIN --}}
+                        <a href="{{ route('register') }}" class="btn btn-gray rounded-pill px-3 mb-2 mb-lg-0">
+                            <span class="d-flex align-items-center">
+                                <span class="small">Sign Up</span>
+                            </span>
+                        </a>
+                        <a href="{{ route('login') }}" class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0">
+                            <span class="d-flex align-items-center">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>
+                                <span class="small">Sign In</span>
+                            </span>
+                        </a>
+                    @endguest
 
-                    {{-- UDAH LOGIN ADMIN --}}
-                    {{-- <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
-                        <span class="d-flex align-items-center">
-                            <i class="bi bi-person me-2"></i>
-                            <span class="small">Usernamenya</span>
-                        </span>
-                    </button> --}}
+                    @auth
+                        @if (Auth::user()->role == 'admin')
+                            {{-- UDAH LOGIN ADMIN --}}
+                            <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+                                <span class="d-flex align-items-center">
+                                    <i class="bi bi-person me-2"></i>
+                                    <span class="small">{{ Auth::user()->name }}</span>
+                                </span>
+                            </button>
+                        @elseif (Auth::user()->role == 'member')
+                            {{-- UDAH LOGIN MEMBER --}}
+                            <button class="btn btn-gray rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+                                <span class="d-flex align-items-center">
+                                    <span class="small">My Cart</span>
+                                </span>
+                            </button>
+                            <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+                                <span class="d-flex align-items-center">
+                                    <i class="bi bi-person me-2"></i>
+                                    <span class="small">{{ Auth::user()->name }}</span>
+                                </span>
+                            </button>
+                        @endif
+                    @endauth
 
                 </div>
             </div>
