@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
@@ -58,13 +59,12 @@ Route::group(['middleware' => 'auth'], function() {
     });
 
     // Admin routes
-    Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/add_product', function () {
+    Route::middleware('admin')->name('admin.')->group(function () {
+        Route::get('add-product', function () {
             return view('admin.add_product');
         })->name('add_product');
 
-        Route::get('/add_category', function () {
-            return view('admin.add_category');
-        })->name('add_category');
+        Route::get('category', [CategoryController::class, 'index'])->name('add_category');
+        Route::post('category', [CategoryController::class, 'add']);
     });
 });
