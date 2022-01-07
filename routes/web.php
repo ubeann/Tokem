@@ -29,6 +29,10 @@ Route::get('/products/detail', function () {
     return view('detail');
 })->name('detail');
 
+Route::get('/abous-us', function () {
+    return view('about-us');
+})->name('about-us');
+
 
 // Authenticated routes
 Route::group(['middleware' => 'auth'], function() {
@@ -39,23 +43,26 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('edit', [AuthController::class, 'update']);
     });
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-    
+
     // Member routes
     Route::middleware('member')->name('member.')->group(function() {
         Route::get('/cart', function () {
             return view('member.cart');
         })->name('cart');
+        Route::get('/checkout', function () {
+            return view('member.checkout');
+        })->name('checkout');
         Route::get('/transaction', function () {
             return view('member.transaction');
         })->name('transaction');
     });
-    
+
     // Admin routes
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/add_product', function () {
             return view('admin.add_product');
         })->name('add_product');
-        
+
         Route::get('/add_category', function () {
             return view('admin.add_category');
         })->name('add_category');

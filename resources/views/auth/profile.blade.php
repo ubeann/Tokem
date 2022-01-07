@@ -1,52 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Profile</title>
-    <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Google fonts-->
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,600;1,600&amp;display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,500;0,600;0,700;1,300;1,500;1,600;1,700&amp;display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/auth.css') }}" rel="stylesheet" />
-</head>
-<body>
-    @if (Session::has('success'))
-        {{-- SUCCESS --}}
-        <div class="alert alert-success alert-dismissible fade show container mt-4" role="alert">
-            {{Session::get('success')}}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+@extends('layouts.app')
 
-    @if (Session::has('error'))
-        {{-- ERROR --}}
-        <div class="alert alert-danger alert-dismissible fade show container mt-4" role="alert">
-            {{Session::get('error')}}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+@section('content')
+<div class="container">
+    <img class=" rounded mx-auto d-block m-4" style="max-width: 250px" src="https://www.freepnglogos.com/uploads/notebook-png/download-laptop-notebook-png-image-png-image-pngimg-2.png" alt="">
+    <div class="d-flex justify-content-center">
+        <a href="{{ route('profile.edit') }}" class="btn btn-primary rounded-pill mx-2">Edit Profile</a>
+        <a href="{{ route('logout') }}" class="btn btn-danger rounded-pill mx-2">Logout</a>
+    </div>
+    <div class="form-group my-2">
+        <label for="name">Name</label>
+        <input readonly name="name" type="text" class="form-control" id="name" value="{{ old('name') ?? $user->name }}">
+    </div>
+    <div class="form-group my-2">
+        <label for="email">Email address</label>
+        <input readonly name="email" type="email" class="form-control" id="email" value="{{ old('email') ?? $user->email }}">
+    </div>
+    <div class="form-group my-2">
+        <label for="address">Address</label>
+        <textarea readonly name="address" type="text" class="form-control" id="address">{{ old('address') ?? $user->address }}</textarea>
+    </div>
+    <div class="form-group my-2 mb-4">
+        <label for="phone">Phone</label>
+        <input readonly name="phone" type="number" class="form-control" id="phone" value="{{ old('phone') ?? $user->phone }}">
+    </div>
 
-    @if ($errors->any())
-        {{-- ERROR --}}
-        <div class="alert alert-danger alert-dismissible fade show container mt-4" role="alert">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-    <a href="{{ route('profile.edit') }}">Edit Profile</a>
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>
+@endsection
+
 

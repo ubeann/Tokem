@@ -14,6 +14,13 @@
         <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,600;1,600&amp;display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,500;0,600;0,700;1,300;1,500;1,600;1,700&amp;display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet" />
+
+        <!-- Favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/favicon/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/img/favicon/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/favicon/favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ asset('assets/img/favicon/site.webmanifest') }}">
+
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet" />
         @yield('head')
@@ -29,9 +36,23 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto me-4 my-3 my-lg-0">
+                        @guest
                         <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('products') }}">Products</a></li>
-                        <li class="nav-item"><a class="nav-link me-lg-3" href="#download">About Us</a></li>
-                        <li class="nav-item"><a class="nav-link me-lg-3" href="#download">My Transaction</a></li>
+                        <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('about-us') }}">About Us</a></li>
+                        @endguest
+                        @auth
+                            @if (Auth::user()->role == 'admin')
+                                {{-- UDAH LOGIN ADMIN --}}
+                                <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('about-us') }}">About Us</a></li>
+                                <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('admin.add_product') }}">Manage Products</a></li>
+                                <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('admin.add_category') }}">Add Category</a></li>
+                            @elseif (Auth::user()->role == 'member')
+                                {{-- UDAH LOGIN MEMBER --}}
+                                <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('products') }}">Products</a></li>
+                                <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('about-us') }}">About Us</a></li>
+                                <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('member.transaction') }}">My Transaction</a></li>
+                            @endif
+                        @endauth
                     </ul>
 
                     @guest
@@ -52,25 +73,25 @@
                     @auth
                         @if (Auth::user()->role == 'admin')
                             {{-- UDAH LOGIN ADMIN --}}
-                            <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+                            <a href="{{ route('profile.index') }}" class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0">
                                 <span class="d-flex align-items-center">
                                     <i class="bi bi-person me-2"></i>
                                     <span class="small">{{ Auth::user()->name }}</span>
                                 </span>
-                            </button>
+                            </a>
                         @elseif (Auth::user()->role == 'member')
                             {{-- UDAH LOGIN MEMBER --}}
-                            <button class="btn btn-gray rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+                            <a href="{{ route('member.cart') }}" class="btn btn-gray rounded-pill px-3 mb-2 mb-lg-0">
                                 <span class="d-flex align-items-center">
                                     <span class="small">My Cart</span>
                                 </span>
-                            </button>
-                            <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+                            </a>
+                            <a href="{{ route('profile.index') }}" class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0">
                                 <span class="d-flex align-items-center">
                                     <i class="bi bi-person me-2"></i>
                                     <span class="small">{{ Auth::user()->name }}</span>
                                 </span>
-                            </button>
+                            </a>
                         @endif
                     @endauth
 
@@ -78,10 +99,34 @@
             </div>
         </nav>
         <div class="mt-5 pt-3">
-            <div class="alert alert-danger alert-dismissible fade show container mt-4" role="alert">
-                <strong>Error!</strong> You should check in on some of those fields below.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
+            <div class="mt-5"></div>
+            @if (Session::has('success'))
+                {{-- SUCCESS --}}
+                <div class="alert alert-success alert-dismissible fade show container mt-4" role="alert">
+                    {{Session::get('success')}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if (Session::has('error'))
+                {{-- ERROR --}}
+                <div class="alert alert-danger alert-dismissible fade show container mt-4" role="alert">
+                    {{Session::get('error')}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                {{-- ERROR --}}
+                <div class="alert alert-danger alert-dismissible fade show container mt-4" role="alert">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             @yield('content')
         </div>
 
@@ -90,7 +135,9 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header bg-gradient-primary-to-secondary p-4">
-                        <h5 class="modal-title font-alt text-white" id="feedbackModalLabel">Send feedback</h5>
+                        <h5 class="modal-title font-alt text-white" id="feedbackModalLabel">Account</h5>
+                        <a href="{{ route('profile.index') }}">Profile</a>
+                        <a href="{{ route('logout') }}">Logout</a>
                         <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 

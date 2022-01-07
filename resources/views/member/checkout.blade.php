@@ -2,7 +2,7 @@
 
 @section('content')
 <form class="container bg-trasparent my-4 p-3" style="position: relative;">
-    <h2>Please confirm your order</h2>
+    <h2>Your Cart</h2>
     <table class="table table-striped table-hover">
         <thead>
         <tr>
@@ -18,21 +18,21 @@
             <th scope="row">1</th>
             <td>Mark</td>
             <td>Rp 12.000,00</td>
-            <td><input name="phone" type="number" value="" class="form-control form-control-sm""></td>
+            <td>5</td>
             <td class="text-end">Rp 60.000,00</td>
         </tr>
         <tr>
             <th scope="row">2</th>
             <td>Jacob</td>
             <td>Rp 12.000,00</td>
-            <td><input name="phone" type="number" value="" class="form-control form-control-sm""></td>
+            <td>5</td>
             <td class="text-end">Rp 60.000,00</td>
         </tr>
         <tr>
             <th scope="row">3</th>
             <td>Jacob</td>
             <td>Rp 12.000,00</td>
-            <td><input name="phone" type="number" value="" class="form-control form-control-sm""></td>
+            <td>5</td>
             <td class="text-end">Rp 60.000,00</td>
         </tr>
         <tr>
@@ -40,12 +40,15 @@
         </tr>
         </tbody>
     </table>
-    <a href="{{ route('member.checkout') }}" type="submit" class="btn btn-primary">Checkout</a>
+    <div class="form-group my-2 mb-4">
+        <label for="codeform">Please enter following passcode to checkout : <span id="code">AEZAKMI</span></label>
+        <input name="codeform" type="text" class="form-control" id="codeform">
+    </div>
+    <button type="submit" class="btn btn-primary">Checkout</button>
 </form>
+<script>
+    let r = (Math.random() + 1).toString(36).substring(7);
+    document.getElementById("code").innerHTML = r;
+</script>
 
-<style>
-    .form-control {
-        max-width: 55px;
-    }
-</style>
 @endsection

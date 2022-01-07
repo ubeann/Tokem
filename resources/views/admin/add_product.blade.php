@@ -9,8 +9,8 @@
             <input type="text" class="form-control" id="name" placeholder="Product name">
         </div>
         <div class="mb-3">
-            <label for="name" class="form-label">Product Description</label>
-            <textarea type="text" class="form-control" id="name" placeholder="Product Description"></textarea>
+            <label for="desc" class="form-label">Product Description</label>
+            <textarea type="text" class="form-control" id="desc" placeholder="Product Description"></textarea>
         </div>
         <div class="mb-3">
             <label for="price" class="form-label">Price</label>
@@ -21,19 +21,19 @@
             <input type="email" class="form-control" id="stock" placeholder="Stock">
         </div>
         <div class="mb-3">
-            <label for="stock" class="form-label">Product Image</label>
-            <input class="form-control" type="file" id="formFile" accept="image/*">
+            <label for="img" class="form-label">Product Image</label>
+            <input class="form-control" type="file" id="img" accept="image/*">
         </div>
         <div class="mb-3">
-            <label for="stock" class="form-label">Product Category</label>
-            <select class="form-select" id="inputGroupSelect01">
+            <label for="cat" class="form-label">Product Category</label>
+            <select class="form-select" id="cat">
                 <option selected disabled>Choose...</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
                 <option value="3">Three</option>
               </select>
         </div>
-        <button type="submit" class="btn btn-white">Cancel</button>
+        <button type="button" class="btn btn-white">Cancel</button>
         <button type="submit" class="btn btn-primary">Add Product</button>
     </form>
 </div>

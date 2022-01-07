@@ -32,7 +32,7 @@
                 <div class="clearfix mb-3"> <span class="float-start badge rounded-pill bg-success">Rp 250.000,00</span> <span class="float-end"><p href="#" class="text-muted">Kategorinya</p></span> </div>
                 <div class="text-center d-grid">
                     <a href="#" class="btn btn-primary"><i class="bi bi-bag me-2"></i>Add to cart</a>
-                    <a href="{{ route('detail') }}" class="btn btn-info mt-2"><i class="bi bi-list me-2"></i>Lihat detail</a>
+                    <a href="{{ route('detail') }}" class="btn btn-info mt-2"><i class="bi bi-list me-2"></i>Show detail</a>
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
                         <a href="#" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Delete</a>
                     </div>
                     <div class="text-center d-grid">
-                        <a href="{{ route('detail') }}" class="btn btn-info mt-2"><i class="bi bi-list me-2"></i>Lihat detail</a>
+                        <a href="{{ route('detail') }}" class="btn btn-info mt-2"><i class="bi bi-list me-2"></i>Show detail</a>
                     </div>
                 </div>
             </div>
