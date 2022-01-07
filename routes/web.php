@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController as ProductAdmin;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
@@ -22,17 +23,13 @@ Route::get('login', [AuthController::class, 'formLogin'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
 Route::get('register', [AuthController::class, 'formRegister'])->name('register');
 Route::post('register', [AuthController::class, 'register']);
-Route::get('/products', function () {
-    return view('products');
-})->name('products');
+Route::get('/abous-us', [PagesController::class, 'about'])->name('about-us');
+Route::get('products', [PagesController::class, 'products'])->name('products');
 
 Route::get('/products/detail', function () {
     return view('detail');
 })->name('detail');
 
-Route::get('/abous-us', function () {
-    return view('about-us');
-})->name('about-us');
 
 
 // Authenticated routes
@@ -60,9 +57,8 @@ Route::group(['middleware' => 'auth'], function() {
 
     // Admin routes
     Route::middleware('admin')->name('admin.')->group(function () {
-        Route::get('add-product', function () {
-            return view('admin.add_product');
-        })->name('add_product');
+        Route::get('add-product', [ProductAdmin::class, 'form'])->name('add_product');
+        Route::post('add-product', [ProductAdmin::class, 'add']);
 
         Route::get('category', [CategoryController::class, 'index'])->name('add_category');
         Route::post('category', [CategoryController::class, 'add']);

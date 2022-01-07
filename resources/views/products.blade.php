@@ -7,77 +7,120 @@
 @section('content')
 <div class="container-fluid bg-transparent ">
     <form class="input-group justify-content-end">
-        {{-- ADMIN ONLY --}}
-        <a href="" class="btn btn-success me-4"><i class="bi bi-plus me-2"></i>Add Product</a>
-        {{-- END OF ADMIN ONLY --}}
+        @if (Auth::check() and Auth::user()->role == 'admin')
+            {{-- ADMIN ONLY --}}
+            <a href="{{route('admin.add_product')}}" class="btn btn-success me-4"><i class="bi bi-plus me-2"></i>Add Product</a>
+            {{-- END OF ADMIN ONLY --}}
+        @endif
         <div class="form-outline">
-          <input placeholder="Search" type="search" id="form1" class="form-control" />
+          <input name="search" placeholder="Search" type="search" id="form1" class="form-control" />
         </div>
-        <button type="button" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary">
           <i class="bi bi-search"></i>
         </button>
     </form>
 </div>
 <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
 
-    {{-- KALO SEARCH GA NEMU --}}
-    <p class="text-center my-4 p-3">Product not found</p>
+    {{-- Show search --}}
+    @if (isset($search) and $search != '')
+        <div class="container-fluid bg-transparent">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="text-left">Search results for: <b>{{ $search }}</b></h4>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if ($products->count() == 0)
+        <div class="container-fluid bg-transparent">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">Oops!</h4>
+                        <p>No product found.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
-        {{-- PRODUK NORMAL --}}
-        <div class="col card h-100 shadow-sm m-2">
-            <img src="https://www.freepnglogos.com/uploads/notebook-png/download-laptop-notebook-png-image-png-image-pngimg-2.png" class="card-img-top" alt="...">
-            <div href="{{ route('detail') }}" class="card-body">
-                <h5 class="card-title">Produk default</h5>
-                <div class="clearfix mb-3"> <span class="float-start badge rounded-pill bg-success">Rp 250.000,00</span> <span class="float-end"><p href="#" class="text-muted">Kategorinya</p></span> </div>
-                <div class="text-center d-grid">
-                    <a href="#" class="btn btn-primary"><i class="bi bi-bag me-2"></i>Add to cart</a>
-                    <a href="{{ route('detail') }}" class="btn btn-info mt-2"><i class="bi bi-list me-2"></i>Show detail</a>
-                </div>
-            </div>
-        </div>
-        {{-- PRODUK STOK KOSONG --}}
-        <div class="col card h-100 shadow-sm m-2">
-            <img src="https://www.freepnglogos.com/uploads/notebook-png/notebook-laptop-png-images-you-can-download-mashtrelo-14.png" class="card-img-top" alt="...">
-            <div href="{{ route('detail') }}" class="card-body">
-                <h5 class="card-title">Produk habis</h5>
-                <div class="clearfix mb-3"> <span class="float-start badge rounded-pill bg-success">Rp 250.000,00</span> <span class="float-end"><p href="#" class="text-muted">Kategorinya</p></span> </div>
-                <div class="text-center d-grid">
-                    <a href="#" class="btn btn-gray disabled my-4" aria-disabled="true">Product unavaible</a>
-                </div>
-            </div>
-        </div>
-
-        {{-- PRODUK ADMIN --}}
-        <div class="col card h-100 shadow-sm m-2">
-            <img src="https://www.freepnglogos.com/uploads/notebook-png/download-laptop-notebook-png-image-png-image-pngimg-2.png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Produk di admin</h5>
-                <div class="clearfix mb-3"> <span class="float-start badge rounded-pill bg-success">Rp 250.000,00</span> <span class="float-end"><p href="#" class="text-muted">Kategorinya</p></span> </div>
-                <div class="row">
-                    <div class="col text-center d-grid">
-                        <a href="#" class="btn btn-secondary"><i class="bi bi-pen me-2"></i>Edit</a>
-                    </div>
-                    <div class="col text-center d-grid">
-                        <a href="#" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Delete</a>
-                    </div>
-                    <div class="text-center d-grid">
-                        <a href="{{ route('detail') }}" class="btn btn-info mt-2"><i class="bi bi-list me-2"></i>Show detail</a>
+        @foreach ($products as $product)
+            <div class="col card h-100 shadow-sm m-2">
+                <img src="{{$product->image}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{$product->name}}</h5>
+                    <div class="clearfix mb-3"> <span class="float-start badge rounded-pill bg-success">{{"Rp " . number_format($product->price,2,',','.')}}</span> <span class="float-end"><p href="#" class="text-muted">{{$product->category->name}}</p></span> </div>
+                    <div class="row">
+                        @if (Auth::check() and Auth::user()->role == 'admin')
+                            <div class="col text-center d-grid">
+                                <a href="#" class="btn btn-secondary"><i class="bi bi-pen me-2"></i>Edit</a>
+                            </div>
+                            <div class="col text-center d-grid">
+                                <a href="#" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Delete</a>
+                            </div>
+                        @endif
+                        <div class="text-center d-grid mt-2">
+                            @if ($product->stock > 0)
+                                <a href="#" class="btn btn-primary"><i class="bi bi-bag me-2"></i>Add to cart</a>
+                            @else
+                                <a href="#" class="btn btn-gray disabled" aria-disabled="true">Product unavaible</a>
+                            @endif
+                            <a href="{{ route('detail') }}" class="btn btn-info mt-2"><i class="bi bi-list me-2"></i>Show detail</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
+        @endforeach
     </div>
 </div>
 
-<nav class="container-fluid">
-    <ul class="pagination justify-content-center">
-      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">Next</a></li>
-    </ul>
-  </nav>
+@if ($products->hasPages())
+    <nav class="container-fluid">
+        <ul class="pagination justify-content-center">
+            {{-- Previous Page Link --}}
+            @if ($products->onFirstPage())
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+            @else
+                <li class="page-item">
+                    <a class="page-link" href="{{ $products->previousPageUrl() }}" rel="prev">Previous</a>
+                </li>
+            @endif
+                
+            {{-- Pagination Elements --}}
+            @foreach ($products as $product)
+                {{-- "Three Dots" Separator --}}
+                @if (is_string($product))
+                    <li class="page-item disabled" aria-disabled="true"><span class="page-link">{{ $product }}</span></li>
+                @endif
+
+                {{-- Array Of Links --}}
+                @if (is_array($product))
+                    @foreach ($product as $page => $url)
+                        @if ($page == $products->currentPage())
+                            <li class="page-item active" aria-current="page"><span class="page-link">{{ $page }}</span></li>
+                        @else
+                            <li class="page-item"><a class="page-link" href="{{ $url }}">{{ $page }}</a></li>
+                        @endif
+                    @endforeach
+                @endif
+            @endforeach
+
+            {{-- Next Page Link --}}
+            @if ($products->hasMorePages())
+                <li class="page-item">
+                    <a class="page-link" href="{{ $products->nextPageUrl() }}" rel="next">Next</a>
+                </li>
+            @else
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Next</a>
+                </li>
+            @endif
+        </ul>
+    </nav>
+@endif
 @endsection
