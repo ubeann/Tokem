@@ -1,8 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<form class="container bg-trasparent my-4 p-3" style="position: relative;">
-    @csrf
+@if ($cart->count() < 1)
+    <div class="alert alert-danger alert-dismissible fade show container mt-4" role="alert">
+        Your cart is empty, please add some products
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+<div class="container bg-trasparent my-4 p-3" style="position: relative;">
     <h2>Please confirm your order</h2>
     <table class="table table-striped table-hover">
         <thead>
@@ -21,7 +26,17 @@
                     <td>{{$item->product->name}}</td>
                     <td>{{"Rp " . number_format($item->product->price,2,',','.')}}</td>
                     <td>
-                        <input type="number" class="form-control" value="{{$item->quantity}}" name="quantity[{{$item->product->id}}]">
+                        <form id="cart-{{$item->id}}" action="{{route('member.cart.update',$item->id)}}" method="POST">
+                            @csrf
+                            <input type="number" class="form-control" value="{{$item->quantity}}" name="quantity" onchange="
+                                if(this.value >= 0){
+                                    document.getElementById('cart-{{$item->id}}').submit();
+                                } else {
+                                    alert('Quantity must be greater than or equal to 0');
+                                    this.value = {{$item->quantity}};
+                                }
+                            ">
+                        </form>
                     </td>
                     <td class="text-end">{{"Rp " . number_format($item->sub_total,2,',','.')}}</td>
                 </tr>
@@ -41,7 +56,7 @@
     @if ($cart->count() > 0)
         <a href="{{ route('member.checkout') }}" type="submit" class="btn btn-primary">Checkout</a>
     @endif
-</form>
+</div>
 
 <style>
     .form-control {

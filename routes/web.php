@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController as ProductAdmin;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Member\CartController;
+use App\Http\Controllers\Member\TransactionController;
 use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,12 +44,11 @@ Route::group(['middleware' => 'auth'], function() {
     // Member routes
     Route::middleware('member')->name('member.')->group(function() {
         Route::get('cart', [CartController::class, 'index'])->name('cart');
-        Route::get('/checkout', function () {
-            return view('member.checkout');
-        })->name('checkout');
-        Route::get('/transaction', function () {
-            return view('member.transaction');
-        })->name('transaction');
+        Route::post('cart/{id}', [CartController::class, 'update'])->name('cart.update');
+
+        Route::get('checkout', [TransactionController::class, 'checkout'])->name('checkout');
+        Route::post('checkout', [TransactionController::class, 'store'])->name('checkout.store');
+        Route::get('transaction', [TransactionController::class, 'index'])->name('transaction');
     });
 
     // Admin routes

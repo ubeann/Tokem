@@ -18,7 +18,7 @@ class Transaction extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function carts() {
-        return $this->hasMany(Cart::class);
+    public function cart() {
+        return $this->hasMany(Cart::class, 'transaction_id', 'id');
     }
 }

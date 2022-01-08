@@ -15,9 +15,6 @@ class CartController extends Controller {
             ->where('user_id', auth()->user()->id)
             ->whereNull('transaction_id')
             ->get();
-        if ($cart->count() == 0) {
-            Session::flash('error', 'Your cart is empty, please add some products');
-        }
         return view('member.cart', compact('cart'));
     }
 
@@ -61,7 +58,7 @@ class CartController extends Controller {
         }
     }
 
-    public function add($id, Request $request) {
+    public function add(Request $request, $id) {
         if (Auth::check()) {
             $product = Product::find($id);
             if (!$product) {
@@ -106,6 +103,40 @@ class CartController extends Controller {
         } else {
             Session::flash('error', 'Please login first');
             return redirect()->back();
+        }
+    }
+
+    public function update(Request $request, $id) {
+        $cart = Cart::find($id);
+        if (!$cart) {
+            Session::flash('error', 'Product not found');
+            return redirect()->route('member.cart');
+        } else {
+            $product = Product::find($cart->product_id);
+            if (!$product) {
+                Session::flash('error', 'Product not found');
+                return redirect()->route('member.cart');
+            } else {
+                if ($request->input('quantity') == 0) {
+                    $cart->delete();
+                    Session::flash('success', 'Product ' . $product->name . ' removed from cart');
+                } else {
+                    if ($request->input('quantity') > $product->stock) {
+                        Session::flash('error', 'Product ' . $product->name . ' cannot exceed ' . $product->stock . ' stock unit');
+                        return redirect()->back()->withInput();
+                    } else if ($request->input('quantity') < 0) {
+                        Session::flash('error', 'Product ' . $product->name . ' cannot be less than 0');
+                        return redirect()->back()->withInput();
+                    } else {
+                        $cart->update([
+                            'quantity' => $request->input('quantity'),
+                            'sub_total' => $request->input('quantity') * $product->price,
+                        ]);
+                        Session::flash('success', 'Product ' . $product->name . ' quantity updated');
+                    }
+                }
+                return redirect()->route('member.cart');
+            }
         }
     }
 }
