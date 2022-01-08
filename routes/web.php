@@ -23,12 +23,9 @@ Route::get('login', [AuthController::class, 'formLogin'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
 Route::get('register', [AuthController::class, 'formRegister'])->name('register');
 Route::post('register', [AuthController::class, 'register']);
-Route::get('/abous-us', [PagesController::class, 'about'])->name('about-us');
 Route::get('products', [PagesController::class, 'products'])->name('products');
-
-Route::get('/products/detail', function () {
-    return view('detail');
-})->name('detail');
+Route::get('products/{id}', [PagesController::class, 'productDetail'])->name('detail');
+Route::get('about-us', [PagesController::class, 'about'])->name('about-us');
 
 
 
@@ -57,8 +54,11 @@ Route::group(['middleware' => 'auth'], function() {
 
     // Admin routes
     Route::middleware('admin')->name('admin.')->group(function () {
-        Route::get('add-product', [ProductAdmin::class, 'form'])->name('add_product');
+        Route::get('add-product', [ProductAdmin::class, 'formAdd'])->name('add_product');
         Route::post('add-product', [ProductAdmin::class, 'add']);
+        Route::get('edit-product/{id}', [ProductAdmin::class, 'formEdit'])->name('edit_product');
+        Route::post('edit-product/{id}', [ProductAdmin::class, 'edit']);
+        Route::get('delete-product/{id}', [ProductAdmin::class, 'delete'])->name('delete_product');
 
         Route::get('category', [CategoryController::class, 'index'])->name('add_category');
         Route::post('category', [CategoryController::class, 'add']);

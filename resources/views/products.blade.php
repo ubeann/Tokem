@@ -13,7 +13,7 @@
             {{-- END OF ADMIN ONLY --}}
         @endif
         <div class="form-outline">
-          <input name="search" placeholder="Search" type="search" id="form1" class="form-control" />
+          <input name="search" placeholder="Search" type="search" id="form1" class="form-control" value="{{$search}}"/>
         </div>
         <button type="submit" class="btn btn-primary">
           <i class="bi bi-search"></i>
@@ -24,7 +24,7 @@
 
     {{-- Show search --}}
     @if (isset($search) and $search != '')
-        <div class="container-fluid bg-transparent">
+        <div class="container-fluid bg-transparent mb-2">
             <div class="row">
                 <div class="col-md-12">
                     <h4 class="text-left">Search results for: <b>{{ $search }}</b></h4>
@@ -49,17 +49,17 @@
     <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
         @foreach ($products as $product)
             <div class="col card h-100 shadow-sm m-2">
-                <img src="{{$product->image}}" class="card-img-top" alt="...">
+                <img src="{{$product->image}}" class="card-img-top" alt="{{$product->name}}">
                 <div class="card-body">
                     <h5 class="card-title">{{$product->name}}</h5>
                     <div class="clearfix mb-3"> <span class="float-start badge rounded-pill bg-success">{{"Rp " . number_format($product->price,2,',','.')}}</span> <span class="float-end"><p href="#" class="text-muted">{{$product->category->name}}</p></span> </div>
                     <div class="row">
                         @if (Auth::check() and Auth::user()->role == 'admin')
                             <div class="col text-center d-grid">
-                                <a href="#" class="btn btn-secondary"><i class="bi bi-pen me-2"></i>Edit</a>
+                                <a href="{{route('admin.edit_product', $product->id)}}" class="btn btn-secondary"><i class="bi bi-pen me-2"></i>Edit</a>
                             </div>
                             <div class="col text-center d-grid">
-                                <a href="#" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Delete</a>
+                                <a href="{{route('admin.delete_product', $product->id)}}" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Delete</a>
                             </div>
                         @endif
                         <div class="text-center d-grid mt-2">
@@ -68,7 +68,7 @@
                             @else
                                 <a href="#" class="btn btn-gray disabled" aria-disabled="true">Product unavaible</a>
                             @endif
-                            <a href="{{ route('detail') }}" class="btn btn-info mt-2"><i class="bi bi-list me-2"></i>Show detail</a>
+                            <a href="{{ route('detail', $product->id) }}" class="btn btn-info mt-2"><i class="bi bi-list me-2"></i>Show detail</a>
                         </div>
                     </div>
                 </div>

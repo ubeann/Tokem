@@ -11,7 +11,7 @@
         </div>
         <div class="form-group my-2">
             <label for="email">Email address</label>
-            <input name="email" type="email" class="form-control" id="email" value="{{ old('email') ?? $user->email }}">
+            <input name="email" type="email" class="form-control" id="email" value="{{ old('email') ?? $user->email }}" disabled>
         </div>
         <div class="form-group my-2">
             <label for="password">Password</label>

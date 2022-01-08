@@ -37,14 +37,14 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto me-4 my-3 my-lg-0">
                         @guest
-                        <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('products') }}">Products</a></li>
-                        <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('about-us') }}">About Us</a></li>
+                            <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('products') }}">Products</a></li>
+                            <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('about-us') }}">About Us</a></li>
                         @endguest
                         @auth
                             @if (Auth::user()->role == 'admin')
                                 {{-- UDAH LOGIN ADMIN --}}
                                 <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('about-us') }}">About Us</a></li>
-                                <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('admin.add_product') }}">Manage Products</a></li>
+                                <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('products') }}">Manage Products</a></li>
                                 <li class="nav-item"><a class="nav-link me-lg-3" href="{{ route('admin.add_category') }}">Add Category</a></li>
                             @elseif (Auth::user()->role == 'member')
                                 {{-- UDAH LOGIN MEMBER --}}

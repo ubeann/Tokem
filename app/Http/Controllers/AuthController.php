@@ -32,20 +32,11 @@ class AuthController extends Controller {
 
         if (Auth::check()) {
             $user = Auth::user();
-            if ($user->role == 'admin') {
-                if ($remember) {
-                    $cookie = cookie('email', $user->email, 2629440);
-                    return redirect()->route('admin.dashboard')->withCookie($cookie);
-                } else {
-                    return redirect()->route('admin.dashboard');
-                }
+            if ($remember) {
+                $cookie = cookie('email', $user->email, 2629440);
+                return redirect()->route('landing')->withCookie($cookie);
             } else {
-                if ($remember) {
-                    $cookie = cookie('email', $user->email, 2629440);
-                    return redirect()->route('landing')->withCookie($cookie);
-                } else {
-                    return redirect()->route('landing');
-                }
+                return redirect()->route('landing');
             }
         } else {
             return redirect()->route('login')->with('error', 'Email or password is wrong')->withInput();
@@ -103,7 +94,6 @@ class AuthController extends Controller {
         } else {
             $request->validate([
                 'name'      => 'required|string|max:255',
-                'email'     => 'required|string|email',
                 'password'  => 'required|string|min:8',
                 'confirm'   => 'required|string|min:8',
                 'address'   => 'required|string|min:15',
@@ -112,15 +102,10 @@ class AuthController extends Controller {
 
             $user = Auth::user();
 
-            if ($user->email != $request->input('email')) {
-                return redirect()->route('profile.edit')->with('error', 'Email cannot be changed')->withInput();
-            }
-
             if (Hash::check($request->input('confirm'), $user->password)) {
                 User::where('id', Auth::user()->id)
                     ->update([
                         'name'      => $request->input('name'),
-                        'email'     => $request->input('email'),
                         'password'  => Hash::make($request->input('password')),
                         'address'   => $request->input('address'),
                         'phone'     => $request->input('phone'),
