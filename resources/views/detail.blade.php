@@ -12,16 +12,17 @@
             <p>Kategori : {{$product->category->name}}</p>
             <p>Stok : {{$product->stock > 0 ? $product->stock : "habis"}}</p>
             <p>Harga : {{"Rp " . number_format($product->price,2,',','.')}}</p>
-            @if((Auth::check() and Auth::user()->role != 'admin') or !Auth::check())
+            @if(((Auth::check() and Auth::user()->role != 'admin') or !Auth::check()) and $product->stock > 0)
               {{-- KALO ADMIN GADA TOMBOL ADD TO CART --}}
-              <form class="input-group justify-content-end" method="POST">
-                  <div class="form-outline">
-                    <input placeholder="Quantity" id="form1" class="form-control" />
-                  </div>
-                  <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-cart"></i>
-                    Add to cart
-                  </button>
+              <form class="input-group justify-content-end" method="POST" action="{{route('add-to-cart', $product->id)}}">
+                @csrf
+                <div class="form-outline">
+                  <input name="quantity" type="number" placeholder="Quantity" id="quantity" class="form-control" value="{{old('quantity')}}"/>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-cart"></i>
+                  Add to cart
+                </button>
               </form>
             @endif
         </div>

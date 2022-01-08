@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController as ProductAdmin;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Member\CartController;
 use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,9 +26,9 @@ Route::get('register', [AuthController::class, 'formRegister'])->name('register'
 Route::post('register', [AuthController::class, 'register']);
 Route::get('products', [PagesController::class, 'products'])->name('products');
 Route::get('products/{id}', [PagesController::class, 'productDetail'])->name('detail');
+Route::get('add-to-cart/{product_id}', [CartController::class, 'initiate'])->name('add-to-cart');
+Route::post('add-to-cart/{product_id}', [CartController::class, 'add']);
 Route::get('about-us', [PagesController::class, 'about'])->name('about-us');
-
-
 
 // Authenticated routes
 Route::group(['middleware' => 'auth'], function() {
@@ -41,9 +42,7 @@ Route::group(['middleware' => 'auth'], function() {
 
     // Member routes
     Route::middleware('member')->name('member.')->group(function() {
-        Route::get('/cart', function () {
-            return view('member.cart');
-        })->name('cart');
+        Route::get('cart', [CartController::class, 'index'])->name('cart');
         Route::get('/checkout', function () {
             return view('member.checkout');
         })->name('checkout');

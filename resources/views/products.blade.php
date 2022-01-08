@@ -64,7 +64,7 @@
                         @endif
                         <div class="text-center d-grid mt-2">
                             @if ($product->stock > 0)
-                                <a href="#" class="btn btn-primary"><i class="bi bi-bag me-2"></i>Add to cart</a>
+                                <a href="{{route('add-to-cart', $product->id)}}" class="btn btn-primary"><i class="bi bi-bag me-2"></i>Add to cart</a>
                             @else
                                 <a href="#" class="btn btn-gray disabled" aria-disabled="true">Product unavaible</a>
                             @endif
