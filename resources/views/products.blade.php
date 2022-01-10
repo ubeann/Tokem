@@ -56,19 +56,21 @@
                     <div class="row">
                         @if (Auth::check() and Auth::user()->role == 'admin')
                             <div class="col text-center d-grid">
-                                <a href="{{route('admin.edit_product', $product->id)}}" class="btn btn-secondary"><i class="bi bi-pen me-2"></i>Edit</a>
+                                <a href="{{route('admin.edit_product', $product->id)}}" class="btn btn-secondary rounded-pill"><i class="bi bi-pen me-2"></i>Edit</a>
                             </div>
                             <div class="col text-center d-grid">
-                                <a href="{{route('admin.delete_product', $product->id)}}" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Delete</a>
+                                <a href="{{route('admin.delete_product', $product->id)}}" class="btn btn-danger rounded-pill"><i class="bi bi-trash me-2"></i>Delete</a>
                             </div>
                         @endif
                         <div class="text-center d-grid mt-2">
                             @if ($product->stock > 0)
-                                <a href="{{route('add-to-cart', $product->id)}}" class="btn btn-primary"><i class="bi bi-bag me-2"></i>Add to cart</a>
+                                @if (Auth::check() and Auth::user()->role != 'admin')
+                                <a href="{{route('add-to-cart', $product->id)}}" class="btn btn-primary rounded-pill mb-2"><i class="bi bi-bag me-2"></i>Add to cart</a>
+                                @endif
                             @else
                                 <a href="#" class="btn btn-gray disabled" aria-disabled="true">Product unavaible</a>
                             @endif
-                            <a href="{{ route('detail', $product->id) }}" class="btn btn-info mt-2"><i class="bi bi-list me-2"></i>Show detail</a>
+                            <a href="{{ route('detail', $product->id) }}" class="btn btn-info rounded-pill"><i class="bi bi-list me-2"></i>Show detail</a>
                         </div>
                     </div>
                 </div>
@@ -90,7 +92,7 @@
                     <a class="page-link" href="{{ $products->previousPageUrl() }}" rel="prev">Previous</a>
                 </li>
             @endif
-                
+
             {{-- Pagination Elements --}}
             @foreach ($products as $product)
                 {{-- "Three Dots" Separator --}}

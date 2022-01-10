@@ -60,7 +60,7 @@
 
 <style>
     .form-control {
-        max-width: 55px;
+        max-width: 65px;
     }
 </style>
 @endsection

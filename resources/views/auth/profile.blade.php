@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container">
-    <img class=" rounded mx-auto d-block m-4" style="max-width: 250px" src="https://www.freepnglogos.com/uploads/notebook-png/download-laptop-notebook-png-image-png-image-pngimg-2.png" alt="">
     <div class="d-flex justify-content-center">
         <a href="{{ route('profile.edit') }}" class="btn btn-primary rounded-pill mx-2">Edit Profile</a>
         <a href="{{ route('logout') }}" class="btn btn-danger rounded-pill mx-2">Logout</a>

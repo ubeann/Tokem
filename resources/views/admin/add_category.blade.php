@@ -4,9 +4,11 @@
 <div class="container">
     <div>
         <h2>Category List</h2>
-        @foreach ($category as $item)
-            <p  class="badge rounded-pill bg-light text-dark">{{$item->name}}</p>
-        @endforeach
+        <div class="d-flex">
+            @foreach ($category as $item)
+                <h4 class="m-1"><span class="badge rounded-pill bg-light text-dark">{{$item->name}}</span></h4>
+            @endforeach
+        </div>
     </div>
     <h2 class="mt-4">Add Category</h2>
     <form method="POST">
