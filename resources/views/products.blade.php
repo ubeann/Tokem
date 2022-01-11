@@ -63,10 +63,8 @@
                             </div>
                         @endif
                         <div class="text-center d-grid mt-2">
-                            @if ($product->stock > 0)
-                                @if (Auth::check() and Auth::user()->role != 'admin')
+                            @if(((Auth::check() and Auth::user()->role != 'admin') or !Auth::check()) and $product->stock > 0)
                                 <a href="{{route('add-to-cart', $product->id)}}" class="btn btn-primary rounded-pill mb-2"><i class="bi bi-bag me-2"></i>Add to cart</a>
-                                @endif
                             @else
                                 <a href="#" class="btn btn-gray disabled" aria-disabled="true">Product unavaible</a>
                             @endif
